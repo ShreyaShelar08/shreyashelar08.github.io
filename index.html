@@ -209,7 +209,8 @@
         #hero {
             min-height: 100vh;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1.25fr .75fr;
+            column-gap: .8rem;
             align-items: center;
             padding: 8rem 4rem 4rem;
             position: relative;
@@ -444,14 +445,16 @@
             position: relative;
             z-index: 2;
             display: flex;
-            justify-content: center;
-            align-items: center
+            justify-content: flex-start;
+            align-items: center;
+            padding-left: 0;
         }
 
         .photo-scrapbook {
             position: relative;
             width: 340px;
-            height: 420px
+            height: 420px;
+            margin-left: -1rem;
         }
 
         .photo-card {
@@ -466,7 +469,7 @@
             width: 260px;
             height: 340px;
             top: 20px;
-            left: 40px;
+            left: 28px;
             transform: rotate(-2deg);
             z-index: 3;
             animation: pfloat 5s ease-in-out infinite;
@@ -482,7 +485,7 @@
             width: 240px;
             height: 310px;
             top: 0;
-            left: 20px;
+            left: 14px;
             transform: rotate(3.5deg);
             z-index: 2;
             background: var(--lavender);
@@ -493,7 +496,7 @@
             width: 230px;
             height: 300px;
             top: 10px;
-            left: 60px;
+            left: 46px;
             transform: rotate(-5deg);
             z-index: 1;
             background: var(--parchment)
@@ -633,7 +636,7 @@
         .stk1 {
             background: var(--blush);
             color: var(--crimson);
-            top: -18px;
+            top: -12px;
             right: 8px;
             transform: rotate(8deg);
             border: 1px solid var(--rose);
@@ -2710,7 +2713,7 @@
         <h2 class="sec-title">Let's <em>build</em> something</h2>
         <p class="contact-sub">Open to AI Engineer, ML Engineer & Full-Stack AI roles.</p>
         <div class="contact-links">
-            <a href="https://linkedin.com/in/shreyashelar-19" target="_blank" class="c-link">in LinkedIn</a>
+            <a href="https://www.linkedin.com/in/shreya-shelar19" target="_blank" class="c-link">in LinkedIn</a>
             <a href="https://github.com/ShreyaShelar08" target="_blank" class="c-link">GitHub</a>
             <a href="Shreya_Shelar_Resume.pdf" target="_blank" class="c-link">Resume</a>
         </div>
@@ -2769,10 +2772,21 @@
 
         /* ACTIVE NAV */
         const secs = document.querySelectorAll('section[id]'), nls = document.querySelectorAll('.nav-links a');
-        window.addEventListener('scroll', () => {
-            let c = ''; secs.forEach(s => { if (window.scrollY >= s.offsetTop - 130) c = s.id; });
-            nls.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + c));
-        });
+        function updateActiveNav() {
+            const scrollPosition = window.scrollY + 180;
+            let current = secs[0] ? secs[0].id : '';
+            secs.forEach(s => {
+                if (s.offsetTop <= scrollPosition) current = s.id;
+            });
+            if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100) {
+                current = secs[secs.length - 1].id;
+            }
+            nls.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+        }
+        window.addEventListener('scroll', updateActiveNav);
+        window.addEventListener('resize', updateActiveNav);
+        nls.forEach(a => a.addEventListener('click', () => setTimeout(updateActiveNav, 120)));
+        updateActiveNav();
 
         /* HAMBURGER MENU TOGGLE */
         const hamburger = document.getElementById('hamburger');
